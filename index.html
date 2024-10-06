@@ -7,16 +7,60 @@
 </head>
 <body>
   <div id="main-content">
-    <h1>Task Lister Lite™️</h1>
+    <h1>Movie Watchlist for weekend</h1>
 
     <form id="create-task-form" action="" method="POST">
-      <label for="new-task-description">Task description:</label>
+      <label for="new-task-description">movie description:</label>
       <input type="text" id="new-task-description" name="new-task-description" placeholder="description">
-      <input type="submit" value="Create New Task">
-    </form>
+      <input type="submit" value="Submitt description">
+      <input type="date" id="dueDate" required>
+    </form><br>
+    <div class="pitches">
+        <label for="pitches">pitch:</label>
+        <select id="pitches" required>
+            <option value="in doors">in doors</option>
+            <option value="out doors">out doors</option>
+        </select>
+    </div><br>
+    <div class="Game Modes">Game Modes</div>
+    <label for="modes">player count</label>
+<select id="mode" required>
+    <option value="mode">Single-player </option>
+    <option value="mode"> Multiplayer</option>
+    <option value="mode">Co-op </option>
+    <option value="mode">Competitive</option>
+</select><br>
+<br>
+<br>
 
+    <div class="form-group">
+      <label for="time">TIME<time datetime=""></time>:</label>
+      <select id="time" required>
+        <option value="time">6:30pm-7:30pm</option>
+        <option value="time">7:45pm - 8:45pm</option>
+          <option value="time">9:00pm - 10:15pm</option>
+          <option value="time">11:00pm - 00:00am </option>
+          <option value="time">1:00am - 3:30 am</option> 
+          <option value="time">4:30am - 5:30am </option>
+          <option value="time">HOME !</option>  
+      </select>
+    </div><br></br>
+    <div class="form-group">
+      <label for="priority">game levels:</label>
+      <select id="priority" required>
+          <option value="1">begginer</option>
+          <option value="2">amature</option>
+          <option value="3">semi pro</option>
+          <option value="4">pro</option>
+          <option value="5">advanced</option>
+          <option value="6">wold wide</option>
+          <option value="7">legend</option>
+
+      </select>
+    </div>
+  </div>
     <div id="list">
-      <h2>My Todos:</h2>
+      <h2>submission:</h2>
       <ul id="tasks">
       </ul>
     </div>
