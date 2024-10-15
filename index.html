@@ -2,78 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>gamer</title>
+  <title>game</title>
   <link rel="stylesheet" href="./style.css">
+  <!-- css -->
+  <style>
+    /* Modal styles */
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; 
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; 
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+<!--  -->
 </head>
 <body>
   <div id="main-content">
     <h1>.....GAME NIGHT....</h1>
-     <button onclick="showAlert()">submitied</button>
+   <!-- newform --> 
+   <form id="gameForm">
+    <label for="new-task-description">Game description:</label>
+    <input type="text" id="new-task-description" name="new-task-description" placeholder="description" required><br><br>
+    
+    <label for="dueDate">Due Date:</label>
+    <input type="date" id="dueDate" required><br><br>
 
-    <script>
-        function showAlert() {
-            alert("Tsucssefully bought");
-        }
-    </script>
+    <label for="playerCount">Player Count:</label>
+    <input type="number" id="playerCount" name="playerCount" required><br><br>
 
-    <form id="create-task-form" action="" method="POST">
-      <label for="new-task-description">Game description:</label>
-      <input type="text" id="new-task-description" name="new-task-description" placeholder="description">
-      <input type="submit" value="Submitt description">
-      <input type="date" id="dueDate" required>
-    </form><br>
-    <div class="pitches">
-        <label for="pitches">pitch:</label>
-        <select id="pitches" required>
-            <option value="in doors">in doors</option>
-            <option value="out doors">out doors</option>
-        </select>
-    </div><br>
-    <div class="Game Modes">Game Modes</div>
-    <label for="modes">player count</label>
-<select id="mode" required>
-    <option value="mode">Single-player </option>
-    <option value="mode"> Multiplayer</option>
-    <option value="mode">Co-op </option>
-    <option value="mode">Competitive</option>
-</select><br>
-<br>
-<br>
+    <label for="time">Game Time:</label>
+    <select id="time" required>
+        <option value="6:30pm-7:30pm">6:30pm - 7:30pm</option>
+        <option value="7:45pm-8:45pm">7:45pm - 8:45pm</option>
+        <option value="9:00pm-10:15pm">9:00pm - 10:15pm</option>
+        <option value="11:00pm-00:00am">11:00pm - 00:00am</option>
+        <option value="1:00am-3:30am">1:00am - 3:30am</option>
+        <option value="4:30am-5:30am">4:30am - 5:30am</option>
+        <option value="HOME!">HOME!</option>
+    </select><br><br>
 
-    <div class="form-group">
-      <label for="time">TIME<time datetime=""></time>:</label>
-      <select id="time" required>
-        <option value="time">6:30pm-7:30pm</option>
-        <option value="time">7:45pm - 8:45pm</option>
-          <option value="time">9:00pm - 10:15pm</option>
-          <option value="time">11:00pm - 00:00am </option>
-          <option value="time">1:00am - 3:30 am</option> 
-          <option value="time">4:30am - 5:30am </option>
-          <option value="time">HOME !</option>  
-      </select>
-    </div><br></br>
-    <div class="form-group">
-      <label for="priority">game levels:</label>
-      <select id="priority" required>
-          <option value="1">begginer</option>
-          <option value="2">amature</option>
-          <option value="3">semi pro</option>
-          <option value="4">pro</option>
-          <option value="5">advanced</option>
-          <option value="6">wold wide</option>
-          <option value="7">legend</option>
+    <label for="gameLevels">Game Mode:</label>
+    <select id="gameLevels" required>
+        <option value="Single-player">Single-player</option>
+        <option value="Multiplayer">Multiplayer</option>
+        <option value="Co-op">Co-op</option>
+        <option value="Competitive">Competitive</option>
+    </select><br><br>
 
-      </select>
-    </div>
-  </div>
-    <div id="list">
-      <h2>submission:</h2>
-      <ul id="tasks">
-      </ul>
-    </div>
+    <label for="pitch">Pitch:</label>
+    <textarea id="pitch" name="pitch" rows="4" cols="50" placeholder="Describe your game pitch here..." required></textarea><br><br>
 
-    <script src="./src/index.js"></script>
-  </div>
+    <input type="submit" value="Submit">
+    <button type="button" id="cancelButton">Cancel</button>
+</form>
+
+<div id="list">
+    <h2>Submitted Game Preferences:</h2>
+    <ul id="tasks"></ul>
+</div>
+
+<div id="successMessage" style="display: none; color: green; margin-top: 10px;">
+    You have successfully submitted!
+</div>
+
+<script>
+    document.getElementById('gameForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get the values from the input fields
+        const description = document.getElementById('new-task-description').value;
+        const dueDate = document.getElementById('dueDate').value;
+        const playerCount = document.getElementById('playerCount').value;
+        const time = document.getElementById('time').value;
+        const gameLevels = document.getElementById('gameLevels').value;
+        const pitch = document.getElementById('pitch').value;
+
+        // Create a list item with the submitted data
+        const listItem = document.createElement('li');
+        listItem.textContent = `
+            ${description} | Due: ${dueDate} | Players: ${playerCount} | Time: ${time} | Mode: ${gameLevels} | Pitch: ${pitch}
+        `;
+
+        // Create a delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.marginLeft = '10px';
+        deleteButton.onclick = function() {
+            listItem.remove(); // Remove the list item
+        };
+
+        // Append the delete button to the list item
+        listItem.appendChild(deleteButton);
+        document.getElementById('tasks').appendChild(listItem);
+
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+
+        // Clear the form fields
+        document.getElementById('gameForm').reset();
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        // Clear the form fields
+        document.getElementById('gameForm').reset();
+    });
+</script>
+
+  <!-- mmm -->
+  
 
 </body>
 </html>
